@@ -10,7 +10,8 @@ I hate ants. (🐜🚫) is a strategy survival game where you try to keep a cake
 
 ## Controls:
 🖱️ Right Click + Drag to move the camera
-🖱️ Left Click to interact (destroy ants)   
+🖱️ Left Click to interact (destroy ants)
+🖱️ Scroll wheel to zoom in & out
 
 ☝️ Finger: Click to crush ants under your cursor.
 
