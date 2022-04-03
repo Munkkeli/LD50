@@ -25,6 +25,8 @@ public class Controller : MonoBehaviour
     public Hairspray hairspray;
     public GameObject trap;
 
+    public GameObject trapGuide;
+    
     public Text cakeText;
     public Text scoreText;
     public ToolButton fingerButton;
@@ -47,13 +49,13 @@ public class Controller : MonoBehaviour
     }
     private HashSet<Trap> _trapsInUse = new HashSet<Trap>();
 
-    private void Awake()
-    {
+    private void Awake() {
         Current = this;
     }
 
     private void Start()
     {
+        trapGuide.SetActive(false);
         fingerButton.GetComponent<Image>().sprite = buttonActive;
         
         fingerButton.button.onClick.AddListener(() =>
@@ -85,6 +87,10 @@ public class Controller : MonoBehaviour
             hairsprayButton.GetComponent<Image>().sprite = buttonNormal;
             trapButton.GetComponent<Image>().sprite = buttonActive;
         });
+        
+        fingerButton.gameObject.SetActive(false);
+        hairsprayButton.gameObject.SetActive(false);
+        trapButton.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -97,9 +103,13 @@ public class Controller : MonoBehaviour
     private void LateUpdate()
     {
         if (View.Current.state != State.GAME) return;
-     
+        
+        fingerButton.gameObject.SetActive(true);
+        
+
         var freeTrapSlots = _availableTraps - _trapsInUse.Count;
-        trapButton.gameObject.SetActive(freeTrapSlots > 0);
+        trapButton.gameObject.SetActive( freeTrapSlots > 0);
+        trapGuide.SetActive(tool == Tool.TRAP && freeTrapSlots > 0);
         
         hairsprayButton.gameObject.SetActive(Controller.Current.score > 50);
         

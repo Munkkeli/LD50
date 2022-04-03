@@ -20,9 +20,9 @@ public class Spawner : MonoBehaviour
     private void Update()
     {
         var score = Controller.Current.score;
-        interval = Mathf.Max(0.6f - (score / 1000f), 0.3f);
+        interval = Mathf.Max(0.5f - (score / 1000f), 0.3f);
         
-        if (isNest) interval = Mathf.Max(5f - (score / 2000f), 4f);
+        if (isNest) interval = Mathf.Max(5f - (score / 3000f), 4f);
         
         _timer -= Time.deltaTime;
         if (_timer > 0f) return;

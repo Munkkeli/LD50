@@ -168,7 +168,7 @@ public class Ant : MonoBehaviour
 
     private void Start()
     {
-        isBig = Random.value * 100f < Mathf.Min(Controller.Current.score / 60f, 50f);
+        isBig = Random.value * 100f < Mathf.Min(Controller.Current.score / 40f, 50f);
         headBig.SetActive(isBig);
         antennaLeft.gameObject.SetActive(!isBig);
         antennaRight.gameObject.SetActive(!isBig);
@@ -357,7 +357,7 @@ public class Ant : MonoBehaviour
         Controller.Current.score += 1;
 
         var crushSound = crushSounds[Random.Range(0, crushSounds.Length)];
-        AudioSource.PlayClipAtPoint(crushSound, transform.position, Random.Range(0.6f, 1f));
+        AudioSource.PlayClipAtPoint(crushSound, transform.position, Random.Range(2f, 6f));
 
         var scoreParams = new ParticleSystem.EmitParams
         {

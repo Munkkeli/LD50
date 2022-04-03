@@ -36,7 +36,7 @@ public class Pathfinding : MonoBehaviour
 
     private void FindPath(PathRequest request)
     {
-        if (_isProcessingCount > 10 || _queue.Count > 0)
+        if (_isProcessingCount > 2 || _queue.Count > 0)
         {
             _queue.Enqueue(request);
         }

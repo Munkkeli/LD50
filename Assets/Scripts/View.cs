@@ -81,7 +81,7 @@ public class View : MonoBehaviour
         if (_birdSoundCooldown <= 0)
         {
             var position = new Vector2(Random.Range(-64f, 64f), Random.Range(-64f, 64f));
-            AudioSource.PlayClipAtPoint(birdSounds[Random.Range(0, birdSounds.Length)], position, Random.Range(2f, 4f));
+            AudioSource.PlayClipAtPoint(birdSounds[Random.Range(0, birdSounds.Length)], position, Random.Range(0.6f, 1f));
             _birdSoundCooldown = Random.Range(3f, 10f);
         }
         
@@ -89,7 +89,7 @@ public class View : MonoBehaviour
         if (_rustleSoundCooldown <= 0)
         {
             var position = new Vector2(Random.Range(-64f, 64f), Random.Range(-64f, 64f));
-            AudioSource.PlayClipAtPoint(rustleSounds[Random.Range(0, rustleSounds.Length)], position, Random.Range(1f, 2f));
+            AudioSource.PlayClipAtPoint(rustleSounds[Random.Range(0, rustleSounds.Length)], position, Random.Range(0.3f, 1f));
             _rustleSoundCooldown = Random.Range(4f, 8f);
         }
 
