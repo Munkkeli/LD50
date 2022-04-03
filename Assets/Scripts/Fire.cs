@@ -39,7 +39,7 @@ public class Fire : MonoBehaviour
         {
             if (collider.TryGetComponent(out Ant ant))
             {
-                ant.isOnFire = true;
+                ant.Fire();
                 ant.health -= 0.1f * Time.deltaTime;
             }
         }

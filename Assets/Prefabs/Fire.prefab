@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   burnRadius: 1
+  burnDuration: 4
 --- !u!50 &1583542529
 Rigidbody2D:
   serializedVersion: 4

@@ -16,7 +16,7 @@ public class Trap : MonoBehaviour
         _checkRadiusCooldown = CheckRadiusTimeout;
 
         var position = transform.position;
-        var avoidRadius = attractRadius + 1;
+        var avoidRadius = attractRadius + 3;
         for (var x = -avoidRadius; x < avoidRadius; x++)
         {
             for (var y = -avoidRadius; y < avoidRadius; y++)

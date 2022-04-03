@@ -13,10 +13,27 @@ public struct Gathering
 public class AI : MonoBehaviour
 {
     public static AI Current;
-    
+
+    public int Difficulty
+    {
+        get
+        {
+            if (Controller.Current.score < 80) return 1;
+            if (Controller.Current.score < 300) return 2;
+            return 3;
+        }
+    }
+
     public Transform cake;
     public Collider2D gatherArea;
-    
+
+    public Collider2D[] nestAreasEasy;
+    public Collider2D[] nestAreasMedium;
+    public Collider2D[] nestAreasHard;
+
+    private Collider2D[][] _nestAreasByDifficulty;
+    private Dictionary<int, int> _nestsInAreaByDifficulty = new Dictionary<int, int>() { { 1, 0 }, { 2, 0 }, { 3, 0 } };
+
     private List<Gathering> gatherings = new List<Gathering>();
 
     private int _maxGatheringAnts = 10;
@@ -24,6 +41,13 @@ public class AI : MonoBehaviour
     private void Awake()
     {
         Current = this;
+
+        _nestAreasByDifficulty = new[]
+        {
+            nestAreasEasy,
+            nestAreasMedium,
+            nestAreasHard,
+        };
     }
 
     // Start is called before the first frame update
@@ -105,5 +129,43 @@ public class AI : MonoBehaviour
         }
 
         return CreateGathering();
+    }
+
+    public (Vector2?, int) RandomPointInNestArea()
+    {
+        var difficulties = new int[] { 1, 2, 3 };
+        var difficulty = difficulties[Random.Range(0, Difficulty - 1)];
+
+        while (_nestsInAreaByDifficulty[difficulty] > 10 - ((difficulty - 1) * 2))
+        {
+            if (difficulty >= 3) return (null, difficulty);
+            if (difficulty >= Difficulty) return (null, difficulty);
+            difficulty++;
+        }
+        
+        Debug.Log($"Found nest spot in area {difficulty}");
+        
+        var nestAreas = _nestAreasByDifficulty[difficulty - 1];
+        var area = nestAreas[Random.Range(0, nestAreas.Length)];
+        var bounds = area.bounds;
+        var position = new Vector2(Random.Range(bounds.min.x, bounds.max.x), Random.Range(bounds.min.y, bounds.max.y));
+        return (position, difficulty);
+    }
+    
+    public bool CheckIfNestCanBePlaced(int difficulty)
+    {
+        var isAllowed = _nestsInAreaByDifficulty[difficulty] <= 10;
+        Debug.Log($"Is allowed to place nest in {difficulty}? {isAllowed}");
+        return isAllowed;
+    }
+
+    public void InformAboutPlacedNest(int difficulty)
+    {
+        _nestsInAreaByDifficulty[difficulty]++;
+    }
+    
+    public void InformAboutDestroyedNest(int difficulty)
+    {
+        _nestsInAreaByDifficulty[difficulty]--;
     }
 }

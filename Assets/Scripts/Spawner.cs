@@ -6,22 +6,32 @@ public class Spawner : MonoBehaviour
 {
     public GameObject Entity;
     public float interval = 1f;
-
+    public bool isNest = false;
+    
+    private Collider2D _spawnArea;
     private float _timer;
     
-    // Start is called before the first frame update
-    void Await()
+    private void Awake()
     {
+        _spawnArea = GetComponent<Collider2D>();
         _timer = interval;
     }
-
-    // Update is called once per frame
-    void Update()
+    
+    private void Update()
     {
+        var score = Controller.Current.score;
+        interval = Mathf.Max(0.6f - (score / 1000f), 0.3f);
+        
+        if (isNest) interval = Mathf.Max(5f - (score / 2000f), 4f);
+        
         _timer -= Time.deltaTime;
         if (_timer > 0f) return;
 
-        Instantiate(Entity, new Vector3(transform.position.x, transform.position.y, 0), Quaternion.identity);
+        var bounds = _spawnArea.bounds;
+        var position = new Vector2(Random.Range(bounds.min.x, bounds.max.x), Random.Range(bounds.min.y, bounds.max.y));
+
+        var antGameObject = Instantiate(Entity, position, Quaternion.identity);
+        antGameObject.GetComponent<Ant>().isFromNest = isNest;
         _timer = interval;
     }
 }

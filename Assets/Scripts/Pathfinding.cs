@@ -81,7 +81,7 @@ public class Pathfinding : MonoBehaviour
                     var pathTile = tileToPathTile[neighbour];
                     if (!neighbour.isWalkable || closedSet.Contains(pathTile)) continue;
 
-                    var inUseCost = neighbour.isInUse ? 2 : 0;
+                    var inUseCost = neighbour.isInUse ? 5 : 0;
                     var inFireCost = neighbour.isOnFire ? 100 : 0;
                     var isUnderTrapCost = neighbour.isUnderTrap ? Random.Range(15, 125) : 0;
                     

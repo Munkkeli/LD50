@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public enum Tool
@@ -14,6 +15,9 @@ public enum Tool
 public class Controller : MonoBehaviour
 {
     public static Controller Current;
+
+    public int cakeHealth = 20;
+    public int score = 0;
     
     public Tool tool = Tool.FINGER;
 
@@ -21,11 +25,26 @@ public class Controller : MonoBehaviour
     public Hairspray hairspray;
     public GameObject trap;
 
-    public Button fingerButton;
-    public Button hairsprayButton;
-    public Button trapButton;
+    public Text cakeText;
+    public Text scoreText;
+    public ToolButton fingerButton;
+    public ToolButton hairsprayButton;
+    public ToolButton trapButton;
     
-    private int _availableTraps = 3;
+    public Sprite buttonNormal;
+    public Sprite buttonActive;
+
+    public bool isHoveringButton;
+    public float buttonClickCooldown = 0f;
+    private int _availableTraps {
+        get
+        {
+            if (score > 700) return 3;
+            if (score > 400) return 2;
+            if (score > 150) return 1;
+            return 0;
+        }
+    }
     private HashSet<Trap> _trapsInUse = new HashSet<Trap>();
 
     private void Awake()
@@ -35,24 +54,59 @@ public class Controller : MonoBehaviour
 
     private void Start()
     {
-        fingerButton.onClick.AddListener(() =>
+        fingerButton.GetComponent<Image>().sprite = buttonActive;
+        
+        fingerButton.button.onClick.AddListener(() =>
         {
             tool = Tool.FINGER;
+            buttonClickCooldown = 0.2f;
+
+            fingerButton.GetComponent<Image>().sprite = buttonActive;
+            hairsprayButton.GetComponent<Image>().sprite = buttonNormal;
+            trapButton.GetComponent<Image>().sprite = buttonNormal;
         });
-        
-        hairsprayButton.onClick.AddListener(() =>
+
+        hairsprayButton.button.onClick.AddListener(() =>
         {
             tool = Tool.HAIRSPRAY;
+            buttonClickCooldown = 0.2f;
+            
+            fingerButton.GetComponent<Image>().sprite = buttonNormal;
+            hairsprayButton.GetComponent<Image>().sprite = buttonActive;
+            trapButton.GetComponent<Image>().sprite = buttonNormal;
         });
         
-        trapButton.onClick.AddListener(() =>
+        trapButton.button.onClick.AddListener(() =>
         {
             tool = Tool.TRAP;
+            buttonClickCooldown = 0.2f;
+            
+            fingerButton.GetComponent<Image>().sprite = buttonNormal;
+            hairsprayButton.GetComponent<Image>().sprite = buttonNormal;
+            trapButton.GetComponent<Image>().sprite = buttonActive;
         });
+    }
+
+    private void Update()
+    {
+        isHoveringButton = fingerButton.isHovering || hairsprayButton.isHovering || trapButton.isHovering;
+        cakeText.text = "" + cakeHealth;
+        scoreText.text = "" + score;
     }
 
     private void LateUpdate()
     {
+        if (View.Current.state != State.GAME) return;
+     
+        var freeTrapSlots = _availableTraps - _trapsInUse.Count;
+        trapButton.gameObject.SetActive(freeTrapSlots > 0);
+        
+        hairsprayButton.gameObject.SetActive(Controller.Current.score > 50);
+        
+        buttonClickCooldown = Mathf.Max(0, buttonClickCooldown - Time.deltaTime);
+        if (buttonClickCooldown > 0) return;
+        if (isHoveringButton) return;
+        
         if (tool == Tool.FINGER)
         {
             if (Input.GetMouseButtonDown(0)) finger.Tap(Camera.main.ScreenToWorldPoint(Input.mousePosition));
@@ -60,7 +114,6 @@ public class Controller : MonoBehaviour
 
         if (tool == Tool.TRAP)
         {
-            var freeTrapSlots = _availableTraps - _trapsInUse.Count;
             if (Input.GetMouseButtonUp(0) && !View.Current.IsTracking && freeTrapSlots > 0)
             {
                 var position = Camera.main.ScreenToWorldPoint(Input.mousePosition);

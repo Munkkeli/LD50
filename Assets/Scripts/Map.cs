@@ -6,6 +6,10 @@ using UnityEngine;
 public class Map : MonoBehaviour
 {
     public static Map Current;
+
+    public ParticleSystem antSplatterEffect;
+    public ParticleSystem antBurnedEffect;
+    public ParticleSystem scoreEffect;
     
     public int Area => size * size;
 
