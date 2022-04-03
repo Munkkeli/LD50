@@ -4,7 +4,7 @@
 (And love cake.)
 
 ### Created for Ludum Dare 50 as a Compo entry
-[https://ldjam.com/events/ludum-dare/50/$287490](https://ldjam.com/events/ludum-dare/50/$287490)
+[https://ldjam.com/events/ludum-dare/50/i-hate-ants](https://ldjam.com/events/ludum-dare/50/i-hate-ants)
 
 I hate ants. (🐜🚫) is a strategy survival game where you try to keep a cake safe from invading ants.
 
