@@ -24,7 +24,7 @@ I hate ants. (🐜🚫) is a strategy survival game where you try to keep a cake
 - Different ant types that you will have to tackle.
 - Score to compete with your friends and other developers in the comments. 🙂
 
-## Ants
+## Ants:
 - Normal: A basic ant, has 1 health point. Gets crushed easily.
 - Brood carrying ant: Carries a brood. Can start a new nest that will spawn extra ants for the rest of the game.
 - Supermajor: Has a large head. Is not effected by traps, and has 3 health points!
